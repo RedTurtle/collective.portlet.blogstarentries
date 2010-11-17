@@ -1,14 +1,16 @@
-from zope.interface import implements
-
-from plone.portlets.interfaces import IPortletDataProvider
+from Products.ATContentTypes.interface import IATFolder
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from collective.portlet.blogstarentries import \
+    BlogstarLastEntriesMessageFactory as _
+from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
 from plone.app.portlets.portlets import base
-
+from plone.app.vocabularies.catalog import SearchableTextSourceBinder
+from plone.memoize.instance import memoize
+from plone.portlets.interfaces import IPortletDataProvider
 from zope import schema
 from zope.formlib import form
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from collective.portlet.blogstarentries import BlogstarLastEntriesMessageFactory as _
-
+from zope.interface import implements
+from Products.CMFCore.utils import getToolByName
 
 class IBlogstarLastEntries(IPortletDataProvider):
     """A portlet
@@ -17,15 +19,16 @@ class IBlogstarLastEntries(IPortletDataProvider):
     data that is being rendered and the portlet assignment itself are the
     same.
     """
-
-    # TODO: Add any zope.schema fields here to capture portlet configuration
-    # information. Alternatively, if there are no settings, leave this as an
-    # empty interface - see also notes around the add form and edit form
-    # below.
-
-    # some_field = schema.TextLine(title=_(u"Some field"),
-    #                              description=_(u"A field to use"),
-    #                              required=True)
+    blogFolder = schema.Choice(title=_(u"Blog folder"),
+                               description=_(u"Insert the folder that is used for the blog."),
+                               required=True,
+                               source=SearchableTextSourceBinder({'object_provides' : IATFolder.__identifier__},
+                                                                 default_query='path:'))
+    
+    entries = schema.Int(title=_(u"Entries"),
+                         description=_(u"The number of entries to show."),
+                         default=5,
+                         required=True)
 
 
 class Assignment(base.Assignment):
@@ -37,23 +40,16 @@ class Assignment(base.Assignment):
 
     implements(IBlogstarLastEntries)
 
-    # TODO: Set default values for the configurable parameters here
-
-    # some_field = u""
-
-    # TODO: Add keyword parameters for configurable parameters here
-    # def __init__(self, some_field=u""):
-    #    self.some_field = some_field
-
-    def __init__(self):
-        pass
+    def __init__(self, blogFolder=None,entries=5):
+        self.blogFolder=blogFolder
+        self.entries = entries
 
     @property
     def title(self):
         """This property is used to give the title of the portlet in the
         "manage portlets" screen.
         """
-        return "Blogstar last entries portlet"
+        return _("Last blog entries")
 
 
 class Renderer(base.Renderer):
@@ -65,6 +61,48 @@ class Renderer(base.Renderer):
     """
 
     render = ViewPageTemplateFile('blogstarlastentries.pt')
+    
+    @property
+    def available(self):
+        try:
+            if self.items():
+                return True
+            else:
+                return False
+        except AttributeError:
+            return False
+    
+    @memoize
+    def items(self):
+        catalog = getToolByName(self.context, 'portal_catalog')
+        # Get the path of where the portlet is created. That's the blog.
+        root_path='/'.join(self.context.portal_url.getPortalObject().getPhysicalPath())
+        
+        folder_path = root_path+self.data.blogFolder
+        # Because of ExtendedPathIndex being braindead it's tricky (read:
+        # impossible) to get all subobjects for all folder, without also
+        # getting the folder. So we set depth to 1, which means we only get
+        # the immediate children. This is not a bug, but a lack of feature.
+        # Find the blog types:
+        portal_properties = getToolByName(self.context, 'portal_properties', None)
+        site_properties = getattr(portal_properties, 'site_properties', None)
+        portal_types = site_properties.getProperty('blog_types', None)
+        if portal_types == None:
+            portal_types = ('Document', 'News Item', 'File')
+
+        brains = catalog(path={'query': folder_path, 'depth': 1},
+                         portal_type=portal_types,
+                         sort_on='effective', sort_order='reverse')
+        return brains[:self.data.entries]
+        
+    def item_url(self, item):
+        portal_properties = getToolByName(self.context, 'portal_properties')
+        site_properties = getattr(portal_properties, 'site_properties')
+        use_view = site_properties.getProperty('typesUseViewActionInListings')
+        url = item.getURL()
+        if item.portal_type in use_view:
+            return '%s/view' % url
+        return url
 
 
 class AddForm(base.AddForm):
@@ -75,26 +113,12 @@ class AddForm(base.AddForm):
     constructs the assignment that is being added.
     """
     form_fields = form.Fields(IBlogstarLastEntries)
-
+    form_fields['blogFolder'].custom_widget = UberSelectionWidget
+    
     def create(self, data):
         return Assignment(**data)
-
-
-# NOTE: If this portlet does not have any configurable parameters, you
-# can use the next AddForm implementation instead of the previous.
-
-# class AddForm(base.NullAddForm):
-#     """Portlet add form.
-#     """
-#     def create(self):
-#         return Assignment()
-
-
-# NOTE: If this portlet does not have any configurable parameters, you
-# can remove the EditForm class definition and delete the editview
-# attribute from the <plone:portlet /> registration in configure.zcml
-
-
+    
+    
 class EditForm(base.EditForm):
     """Portlet edit form.
 
@@ -102,3 +126,5 @@ class EditForm(base.EditForm):
     zope.formlib which fields to display.
     """
     form_fields = form.Fields(IBlogstarLastEntries)
+    form_fields['blogFolder'].custom_widget = UberSelectionWidget
+    
