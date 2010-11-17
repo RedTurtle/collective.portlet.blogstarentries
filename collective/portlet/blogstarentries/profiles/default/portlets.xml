@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<portlets>
+
+ <!-- Portlet type registrations -->
+
+ <portlet
+   addview="collective.portlet.blogstarentries.BlogstarLastEntries"
+   title="Blogstar last entries portlet"
+   description="An additional portlet that show the last entries of a blog, outside the effective blog folder"
+   />
+
+</portlets>
