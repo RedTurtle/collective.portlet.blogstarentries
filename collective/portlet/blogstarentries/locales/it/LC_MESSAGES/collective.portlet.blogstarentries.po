@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-11-17 16:19+0000\n"
+"POT-Creation-Date: 2010-11-17 16:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,33 +12,39 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"Language-Code: en\n"
-"Language-Name: English\n"
+"Language-Code: it\n"
+"Language-Name: Italian\n"
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.portlet.blogstarentries\n"
 
-#: ./collective/portlet/blogstarentries/blogstarlastentries.py:22
-msgid "Blog folder"
-msgstr "Cartella del blog"
-
 #: ./collective/portlet/blogstarentries/blogstarlastentries.py:28
+msgid "Blog folder"
+msgstr "Cartella dei blog"
+
+#: ./collective/portlet/blogstarentries/blogstarlastentries.py:34
 msgid "Entries"
 msgstr "Post"
 
-#: ./collective/portlet/blogstarentries/blogstarlastentries.py:23
+#: ./collective/portlet/blogstarentries/blogstarlastentries.py:29
 msgid "Insert the folder that is used for the blog."
 msgstr "Inserisci la cartella usata come blog."
 
-#: ./collective/portlet/blogstarentries/blogstarlastentries.py:52
-msgid "Last blog entries."
-msgstr "Ultimi post del blog."
+#: ./collective/portlet/blogstarentries/blogstarlastentries.py:24
+msgid "Insert the title of the portlet."
+msgstr "Inserisci il titolo della portlet."
 
-#: ./collective/portlet/blogstarentries/blogstarlastentries.py:29
+#: ./collective/portlet/blogstarentries/blogstarlastentries.py:25
+msgid "Last blog entries"
+msgstr "Ultimi post del blog"
+
+#: ./collective/portlet/blogstarentries/blogstarlastentries.py:35
 msgid "The number of entries to show."
 msgstr "Il numero di post da mostrare."
 
-#. Default: "Last blog entries"
-#: ./collective/portlet/blogstarentries/blogstarlastentries.pt:6
-msgid "blogstarentries_portlet_title"
-msgstr "Ultimi post del blog"
+#: ./collective/portlet/blogstarentries/blogstarlastentries.py:23
+msgid "Title of the portlet"
+msgstr "Titolo della portlet"
 
+#: ./collective/portlet/blogstarentries/blogstarlastentries.py:23
+msgid "Blogstar last entries portlet"
+msgstr "Ultimi post di Blogstar"
