@@ -19,9 +19,15 @@ class IBlogstarLastEntries(IPortletDataProvider):
     data that is being rendered and the portlet assignment itself are the
     same.
     """
+    
+    portletTitle = schema.TextLine(title=_(u"Title of the portlet"),
+                                   description = _(u"Insert the title of the portlet."),
+                                   default=_(u"Last blog entries"),
+                                   required = True)
+    
     blogFolder = schema.Choice(title=_(u"Blog folder"),
-                               description=_(u"Insert the folder that is used for the blog."),
-                               required=True,
+                               description=_(u"Insert the folder that is used for the blog. Leave empty to search in all the site."),
+                               required=False,
                                source=SearchableTextSourceBinder({'object_provides' : IATFolder.__identifier__},
                                                                  default_query='path:'))
     
@@ -40,7 +46,8 @@ class Assignment(base.Assignment):
 
     implements(IBlogstarLastEntries)
 
-    def __init__(self, blogFolder=None,entries=5):
+    def __init__(self, portletTitle='',blogFolder=None,entries=5):
+        self.portletTitle=portletTitle
         self.blogFolder=blogFolder
         self.entries = entries
 
@@ -49,7 +56,10 @@ class Assignment(base.Assignment):
         """This property is used to give the title of the portlet in the
         "manage portlets" screen.
         """
-        return _("Last blog entries")
+        if self.portletTitle:
+            return self.portletTitle
+        else:
+            return _(u"Last blog entries")
 
 
 class Renderer(base.Renderer):
@@ -76,9 +86,6 @@ class Renderer(base.Renderer):
     def items(self):
         catalog = getToolByName(self.context, 'portal_catalog')
         # Get the path of where the portlet is created. That's the blog.
-        root_path='/'.join(self.context.portal_url.getPortalObject().getPhysicalPath())
-        
-        folder_path = root_path+self.data.blogFolder
         # Because of ExtendedPathIndex being braindead it's tricky (read:
         # impossible) to get all subobjects for all folder, without also
         # getting the folder. So we set depth to 1, which means we only get
@@ -89,10 +96,15 @@ class Renderer(base.Renderer):
         portal_types = site_properties.getProperty('blog_types', None)
         if portal_types == None:
             portal_types = ('Document', 'News Item', 'File')
-
-        brains = catalog(path={'query': folder_path, 'depth': 1},
-                         portal_type=portal_types,
-                         sort_on='effective', sort_order='reverse')
+        
+        query={'portal_type':portal_types,
+               'sort_on':'effective',
+               'sort_order':'reverse'}
+        if self.data.blogFolder:
+            root_path='/'.join(self.context.portal_url.getPortalObject().getPhysicalPath())
+            folder_path = root_path+self.data.blogFolder
+            query['path']={'query': folder_path, 'depth': 1}
+        brains = catalog(**query)
         return brains[:self.data.entries]
         
     def item_url(self, item):

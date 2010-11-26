@@ -3,7 +3,7 @@
 
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
-        <i18n:block translate="blogstarentries_portlet_title">Last blog entries</i18n:block>
+        <span tal:content="view/data/portletTitle"></span>
         <span class="portletTopRight"></span>
     </dt>
 

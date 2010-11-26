@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-11-17 16:50+0000\n"
+"POT-Creation-Date: 2010-11-18 09:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,31 +17,31 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.portlet.blogstarentries\n"
 
-#: ./collective/portlet/blogstarentries/blogstarlastentries.py:28
+#: ./blogstarlastentries.py:28
 msgid "Blog folder"
 msgstr ""
 
-#: ./collective/portlet/blogstarentries/blogstarlastentries.py:34
+#: ./blogstarlastentries.py:34
 msgid "Entries"
 msgstr ""
 
-#: ./collective/portlet/blogstarentries/blogstarlastentries.py:29
+#: ./blogstarlastentries.py:29
 msgid "Insert the folder that is used for the blog."
 msgstr ""
 
-#: ./collective/portlet/blogstarentries/blogstarlastentries.py:24
+#: ./blogstarlastentries.py:24
 msgid "Insert the title of the portlet."
 msgstr ""
 
-#: ./collective/portlet/blogstarentries/blogstarlastentries.py:25
+#: ./blogstarlastentries.py:25
 msgid "Last blog entries"
 msgstr ""
 
-#: ./collective/portlet/blogstarentries/blogstarlastentries.py:35
+#: ./blogstarlastentries.py:35
 msgid "The number of entries to show."
 msgstr ""
 
-#: ./collective/portlet/blogstarentries/blogstarlastentries.py:23
+#: ./blogstarlastentries.py:23
 msgid "Title of the portlet"
 msgstr ""
 
