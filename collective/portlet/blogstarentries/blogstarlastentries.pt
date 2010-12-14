@@ -6,18 +6,26 @@
         <span tal:content="view/data/portletTitle"></span>
         <span class="portletTopRight"></span>
     </dt>
-
-    <tal:block define="plone_view context/@@plone;"
-        repeat="item view/items">
-        <dd tal:define="oddrow repeat/item/odd"
-            tal:attributes="class python:oddrow and  'portletItem even' or 'portletItem odd'">
-            <a tal:attributes="href python:view.item_url(item)">
-                <tal:block replace="item/pretty_title_or_id" />
-                <span class="portletItemDetails"
-                      tal:content="python:plone_view.toLocalizedTime(item.ModificationDate)"
-                      >23.05.2010</span>
-            </a>
-        </dd>
-    </tal:block>
+	<tal:has_results define="results view/items"
+					 tal:condition="results">
+					 	
+	    <tal:block define="plone_view context/@@plone;
+						   post_icon python:plone_view.getIcon(results[0])"
+        	   	   repeat="item results">
+        	<dd tal:define="oddrow repeat/item/odd"
+            	tal:attributes="class python:oddrow and  'portletItem even' or 'portletItem odd'">
+            	<img tal:replace="structure post_icon/html_tag" />
+				<a tal:attributes="href python:view.item_url(item)">
+                	<tal:block replace="item/pretty_title_or_id" />
+                	<span class="portletItemDetails"
+                    	  tal:content="python:plone_view.toLocalizedTime(item.ModificationDate)">23.05.2010</span>
+            	</a>
+        	</dd>
+	    </tal:block>
+	</tal:has_results>
+	<dd class="portletFooter">
+		<span class="portletBottomLeft"></span>
+    	<span class="portletBottomRight"></span>
+    </dd>
 
 </dl>
