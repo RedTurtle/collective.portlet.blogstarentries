@@ -14,12 +14,16 @@
         	   	   repeat="item results">
         	<dd tal:define="oddrow repeat/item/odd"
             	tal:attributes="class python:oddrow and  'portletItem even' or 'portletItem odd'">
-            	<img tal:replace="structure post_icon/html_tag" />
-				<a tal:attributes="href python:view.item_url(item)">
-                	<tal:block replace="item/pretty_title_or_id" />
-                	<span class="portletItemDetails"
+				<p>
+					<a class="tile" tal:attributes="href python:view.item_url(item)">
+	            		<img tal:replace="structure post_icon/html_tag" />
+                		<tal:block replace="item/pretty_title_or_id" />
+            		</a>
+				</p>
+				<div>
+					<span class="portletItemDetails"
                     	  tal:content="python:plone_view.toLocalizedTime(item.ModificationDate)">23.05.2010</span>
-            	</a>
+				</div>
         	</dd>
 	    </tal:block>
 	</tal:has_results>
