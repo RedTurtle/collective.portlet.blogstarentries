@@ -98,6 +98,7 @@ class Renderer(base.Renderer):
             portal_types = ('Document', 'News Item', 'File')
         
         query={'portal_type':portal_types,
+               'review_state':"published",
                'sort_on':'effective',
                'sort_order':'reverse'}
         if self.data.blogFolder:
