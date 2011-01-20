@@ -34,8 +34,8 @@ msgid "Insert the title of the portlet."
 msgstr "Inserisci il titolo della portlet."
 
 #: ./blogstarlastentries.py:25
-msgid "Last blog entries"
-msgstr "Ultimi post del blog"
+msgid "Blog entries"
+msgstr "Post del blog"
 
 #: ./blogstarlastentries.py:35
 msgid "The number of entries to show."
