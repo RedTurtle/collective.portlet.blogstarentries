@@ -22,7 +22,7 @@ class IBlogstarLastEntries(IPortletDataProvider):
     
     portletTitle = schema.TextLine(title=_(u"Title of the portlet"),
                                    description = _(u"Insert the title of the portlet."),
-                                   default=_(u"Last blog entries"),
+                                   default=_(u"Blog entries"),
                                    required = True)
     
     blogFolder = schema.Choice(title=_(u"Blog folder"),
