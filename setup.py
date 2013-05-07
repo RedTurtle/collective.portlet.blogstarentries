@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.0.2'
+version = '1.1.0'
 
 setup(name='collective.portlet.blogstarentries',
       version=version,
@@ -28,5 +28,8 @@ setup(name='collective.portlet.blogstarentries',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
+      # -*- Entry points: -*-
+      [z3c.autoinclude.plugin]
+      target = plone
       """,
       )
