@@ -15,7 +15,7 @@
         	<dd tal:define="oddrow repeat/item/odd"
             	tal:attributes="class python:oddrow and  'portletItem even' or 'portletItem odd'">
 				<p>
-					<a class="tile" tal:attributes="href python:view.item_url(item)">
+					<a tal:attributes="href python:view.item_url(item)">
 	            		<img tal:replace="structure post_icon/html_tag" />
                 		<tal:block replace="item/pretty_title_or_id" />
             		</a>
