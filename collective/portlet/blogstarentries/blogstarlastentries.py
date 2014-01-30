@@ -1,16 +1,17 @@
-from Products.ATContentTypes.interface import IATFolder
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from collective.portlet.blogstarentries import \
-    BlogstarLastEntriesMessageFactory as _
+# -*- coding: utf-8 -*-
+from collective.portlet.blogstarentries import BlogstarLastEntriesMessageFactory as _
 from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
 from plone.app.portlets.portlets import base
 from plone.app.vocabularies.catalog import SearchableTextSourceBinder
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
+from Products.ATContentTypes.interface import IATFolder
+from Products.CMFCore.utils import getToolByName
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import schema
 from zope.formlib import form
 from zope.interface import implements
-from Products.CMFCore.utils import getToolByName
+
 
 class IBlogstarLastEntries(IPortletDataProvider):
     """A portlet
@@ -19,22 +20,28 @@ class IBlogstarLastEntries(IPortletDataProvider):
     data that is being rendered and the portlet assignment itself are the
     same.
     """
-    
+
     portletTitle = schema.TextLine(title=_(u"Title of the portlet"),
                                    description = _(u"Insert the title of the portlet."),
                                    default=_(u"Blog entries"),
                                    required = True)
-    
+
     blogFolder = schema.Choice(title=_(u"Blog folder"),
                                description=_(u"Insert the folder that is used for the blog. Leave empty to search in all the site."),
                                required=False,
                                source=SearchableTextSourceBinder({'object_provides' : IATFolder.__identifier__},
                                                                  default_query='path:'))
-    
+
     entries = schema.Int(title=_(u"Entries"),
                          description=_(u"The number of entries to show."),
                          default=5,
                          required=True)
+
+    entriesState = schema.List(title=_(u'Entries state'),
+                               description=_(u'Select the review state of the entries. Leave empty to show all the entries.'),
+                               value_type=schema.Choice(vocabulary="collective.portlet.blogstarlastentries.BlogEntryStatesVocabulary",
+                                               required=False,)
+                   )
 
 
 class Assignment(base.Assignment):
@@ -46,10 +53,13 @@ class Assignment(base.Assignment):
 
     implements(IBlogstarLastEntries)
 
-    def __init__(self, portletTitle='',blogFolder=None,entries=5):
-        self.portletTitle=portletTitle
-        self.blogFolder=blogFolder
+    entriesState = []
+
+    def __init__(self, portletTitle='', blogFolder=None, entries=5, entriesState=[]):
+        self.portletTitle = portletTitle
+        self.blogFolder = blogFolder
         self.entries = entries
+        self.entriesState = entriesState
 
     @property
     def title(self):
@@ -71,7 +81,7 @@ class Renderer(base.Renderer):
     """
 
     render = ViewPageTemplateFile('blogstarlastentries.pt')
-    
+
     @property
     def available(self):
         try:
@@ -81,7 +91,7 @@ class Renderer(base.Renderer):
                 return False
         except AttributeError:
             return False
-    
+
     @memoize
     def items(self):
         catalog = getToolByName(self.context, 'portal_catalog')
@@ -96,18 +106,18 @@ class Renderer(base.Renderer):
         portal_types = site_properties.getProperty('blog_types', None)
         if portal_types == None:
             portal_types = ('Document', 'News Item', 'File')
-        
-        query={'portal_type':portal_types,
-               'review_state':"published",
-               'sort_on':'effective',
-               'sort_order':'reverse'}
+        query = {'portal_type': portal_types,
+                 'sort_on': 'effective',
+                 'sort_order': 'reverse'}
+        if self.data.entriesState:
+            query['review_state'] = self.data.entriesState
         if self.data.blogFolder:
-            root_path='/'.join(self.context.portal_url.getPortalObject().getPhysicalPath())
-            folder_path = root_path+self.data.blogFolder
-            query['path']={'query': folder_path, 'depth': 1}
+            root_path = '/'.join(self.context.portal_url.getPortalObject().getPhysicalPath())
+            folder_path = root_path + self.data.blogFolder
+            query['path'] = {'query': folder_path, 'depth': 1}
         brains = catalog(**query)
         return brains[:self.data.entries]
-        
+
     def item_url(self, item):
         portal_properties = getToolByName(self.context, 'portal_properties')
         site_properties = getattr(portal_properties, 'site_properties')
@@ -127,11 +137,11 @@ class AddForm(base.AddForm):
     """
     form_fields = form.Fields(IBlogstarLastEntries)
     form_fields['blogFolder'].custom_widget = UberSelectionWidget
-    
+
     def create(self, data):
         return Assignment(**data)
-    
-    
+
+
 class EditForm(base.EditForm):
     """Portlet edit form.
 
@@ -140,4 +150,3 @@ class EditForm(base.EditForm):
     """
     form_fields = form.Fields(IBlogstarLastEntries)
     form_fields['blogFolder'].custom_widget = UberSelectionWidget
-    

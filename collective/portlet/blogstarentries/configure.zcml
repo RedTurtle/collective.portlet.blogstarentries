@@ -30,4 +30,9 @@
          editview=".blogstarlastentries.EditForm"
          />
 
+<utility
+    component=".vocabularies.BlogEntryStatesVocabularyFactory"
+    name="collective.portlet.blogstarlastentries.BlogEntryStatesVocabulary"
+    />
+
 </configure>
