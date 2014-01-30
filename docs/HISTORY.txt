@@ -4,7 +4,7 @@ Changelog
 1.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Added selection for review_state [cekk]
 
 
 1.1.0 (2013-06-24)

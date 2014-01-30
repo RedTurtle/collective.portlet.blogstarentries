@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-11-18 09:19+0000\n"
+"POT-Creation-Date: 2014-01-30 13:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,31 +17,55 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.portlet.blogstarentries\n"
 
-#: ./blogstarlastentries.py:28
-msgid "Blog folder"
-msgstr ""
-
-#: ./blogstarlastentries.py:34
-msgid "Entries"
+#: ./blogstarlastentries.py:26
+msgid "Blog entries"
 msgstr ""
 
 #: ./blogstarlastentries.py:29
-msgid "Insert the folder that is used for the blog."
+msgid "Blog folder"
 msgstr ""
 
-#: ./blogstarlastentries.py:24
-msgid "Insert the title of the portlet."
-msgstr ""
-
-#: ./blogstarlastentries.py:25
-msgid "Last blog entries"
+#: ./vocabularies.py:22
+msgid "Draft"
 msgstr ""
 
 #: ./blogstarlastentries.py:35
+msgid "Entries"
+msgstr ""
+
+#: ./blogstarlastentries.py:40
+msgid "Entries state"
+msgstr ""
+
+#: ./blogstarlastentries.py:30
+msgid "Insert the folder that is used for the blog. Leave empty to search in all the site."
+msgstr ""
+
+#: ./blogstarlastentries.py:25
+msgid "Insert the title of the portlet."
+msgstr ""
+
+#: ./blogstarlastentries.py:72
+msgid "Last blog entries"
+msgstr ""
+
+#: ./vocabularies.py:23
+msgid "Private"
+msgstr ""
+
+#: ./vocabularies.py:24
+msgid "Published"
+msgstr ""
+
+#: ./blogstarlastentries.py:41
+msgid "Select the review state of the entries. Leave empty to show all the entries."
+msgstr ""
+
+#: ./blogstarlastentries.py:36
 msgid "The number of entries to show."
 msgstr ""
 
-#: ./blogstarlastentries.py:23
+#: ./blogstarlastentries.py:24
 msgid "Title of the portlet"
 msgstr ""
 
