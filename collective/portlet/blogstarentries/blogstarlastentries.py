@@ -107,7 +107,7 @@ class Renderer(base.Renderer):
         if portal_types == None:
             portal_types = ('Document', 'News Item', 'File')
         query = {'portal_type': portal_types,
-                 'sort_on': 'effective',
+                 'sort_on': 'Date',
                  'sort_order': 'reverse'}
         if self.data.entriesState:
             query['review_state'] = self.data.entriesState
